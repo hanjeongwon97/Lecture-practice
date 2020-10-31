@@ -48,7 +48,7 @@ http.createServer((req, res) => {
         <p>
           <a href="/update?title=${title}">수정</a>
           <form action="/delete_post" method="post">
-            <input type="hidden" name="title" value=${title}>
+            <input type="hidden" name="title" value=${encodeURIComponent(title)}>
             <input type="submit" value="삭제">
           </form>
         </p>
@@ -152,7 +152,7 @@ http.createServer((req, res) => {
     req.on('end', () => {
       const post = qs.parse(body);
       console.log(post);
-      fs.unlink(`./data/${post.title}.txt`, () => {
+      fs.unlink(decodeURIComponent(`./data/${post.title}.txt`), () => {
         res.writeHead(302, {Location: '/'});
         res.end();
       });
